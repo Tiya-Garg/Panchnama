@@ -161,9 +161,10 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: latest
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: pnpm install --frozen-lockfile
       - name: Start local Supabase and apply every migration from scratch
-        run: supabase start
+        run: supabase start || (sleep 5 && supabase start)
       - name: Reset to apply migrations cleanly
         run: supabase db reset --local
       - name: Assert docs name only tables/columns/endpoints that exist
